@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofParameterGroup.h"
+#include "ofxJSON.h"
 
 namespace ofxOscPlus {
     
@@ -8,13 +9,26 @@ namespace ofxOscPlus {
     public: // methods
         
         Layout();
-        void setup(const ofParameterGroup &rootGroup);
+        void setup(ofParameterGroup &rootGroup);
         
-        string serialize();
-        bool deserialize(string layout);
+        bool toJson(Json::Value &json);
 
+        bool fromJson(const string& jsonText);
+        bool fromJson(const Json::Value &json);
+
+    private: // methods
+
+        Json::Value& serialize(const ofParameterGroup &group, Json::Value &json);
+        Json::Value& serialize(const ofParameter<float> param, Json::Value &json);
+        Json::Value& serialize(const ofParameter<int> param, Json::Value &json);
+        Json::Value& serialize(const ofParameter<bool> param, Json::Value &json);
+        Json::Value& serialize(const ofParameter<ofColor> param, Json::Value &json);
+        Json::Value& serialize(const ofParameter<ofPoint> param, Json::Value &json);
+
+        bool deserialize(const Json::Value& json, ofParameterGroup &group);
     private: // attributes
         
-        const ofParameterGroup *rootGroup;
+        ofParameterGroup *rootGroup;
+        vector<shared_ptr<ofAbstractParameter>> allocatedParams;
     };
 }
