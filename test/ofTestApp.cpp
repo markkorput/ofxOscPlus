@@ -1,8 +1,11 @@
 #ifdef DEBUG
 
 #include "ofTestApp.h"
-
+// ofxOsc
 #include "../src/ofxOscPlus/Layout.h"
+#include "../src/ofxOscPlus/ParameterServer.h"
+#include "../src/ofxOscPlus/Sender.h"
+#include "../src/ofxOscPlus/Receiver.h"
 
 void ofTestApp::run(){
     ofLogToFile("log-test.txt");
@@ -46,7 +49,6 @@ void ofTestApp::testLayoutSerialize(){
     test_eq(json["testGroup"]["yezno"]["value"].asString(), "true", "bool value");
     test_eq(json["testGroup"]["punto"]["type"].asString(), "point", "bool type");
     test_eq(json["testGroup"]["punto"]["value"].asString(), "3, 3, 3", "bool value");
-
 }
 
 void ofTestApp::testLayoutDeserialize(){
@@ -90,7 +92,64 @@ void ofTestApp::testDiscovery(){
 }
 
 void ofTestApp::testParameterServer(){
+    // setup params
+    ofParameterGroup sourceParams, destParams;
+    ofParameter<float> flParam;
+    ofParameter<ofColor> clrParam;
+    ofParameter<bool> bParam;
+    ofParameter<ofPoint> pointParam;
     
+    sourceParams.setName("testGroup");
+    sourceParams.add(flParam.set("decimal", 1.0f));
+    sourceParams.add(clrParam.set("color", ofColor::white));
+    sourceParams.add(bParam.set("yezno", true));
+    sourceParams.add(pointParam.set("punto", ofPoint(3.0f)));
+
+    // create param server
+    ofxOscPlus::ParameterServer server;
+    server.setup(sourceParams, 8081);
+
+    // create "client"
+    ofxOscPlus::Receiver receiver;
+    receiver.setup(8089);
+
+    // send client signup message to server
+    ofxOscPlus::Sender sender;
+    sender.setup("127.0.0.1", 8081);
+    ofxOscMessage msg;
+    msg.setAddress("/ofxOscPlus/signup");
+    msg.addStringArg("127.0.0.1");
+    msg.addIntArg(8089);
+    sender.sendMessage(msg, false);
+    
+    // server processes signup request and add 127.0.0.1:8089 to list of connected clients
+    {
+        // wait until server param change arrives at our receiver "client"
+        float timeout = ofGetElapsedTimef() + 2.0f;
+        while(ofGetElapsedTimef() < timeout){
+            server.update();
+            if(server.getClientCount() == 1)
+                break;
+        }
+    }
+
+    // make param change
+    test_eq(server.getClientCount(), 1, "client signup received");
+    flParam.set(2.4f);
+
+    // wait until server param change arrives at our receiver "client"
+    {
+        float timeout = ofGetElapsedTimef() + 2.0f;
+        while(ofGetElapsedTimef() < timeout)
+            if(receiver.hasWaitingMessages())
+                break;
+    }
+    
+    // verify that we got a message
+    test_eq(receiver.getNextMessage(msg), true, "receive param change message");
+    test_eq(msg.getAddress(), "/testGroup/decimal", "updated param address");
+    test_eq(msg.getNumArgs(), 1, "new param value arg");
+    test_eq(msg.getArgAsFloat(0), 2.4f, "new param value");
 }
 
 #endif // DEBUG

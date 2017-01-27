@@ -11,6 +11,7 @@
 		101907C4110EF13BAE1F5418 /* NetworkingUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8F23E7D3EC858294E266CAB /* NetworkingUtils.cpp */; };
 		4B322C5144D70015FFC94E02 /* UdpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6E9D68875D108EF97ED3792 /* UdpSocket.cpp */; };
 		4D1F532F1E3BF262009C6F11 /* ParameterServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D1F532D1E3BF262009C6F11 /* ParameterServer.cpp */; };
+		4D1F53321E3C031B009C6F11 /* Sender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D1F53301E3C031B009C6F11 /* Sender.cpp */; };
 		4DCB61451E3B616600025EF6 /* ParameterSync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DCB61411E3B616600025EF6 /* ParameterSync.cpp */; };
 		4DCB61461E3B616600025EF6 /* Receiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DCB61431E3B616600025EF6 /* Receiver.cpp */; };
 		4DCB615A1E3B61C900025EF6 /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DCB61491E3B61C900025EF6 /* ofxBaseGui.cpp */; };
@@ -80,6 +81,8 @@
 		4A3DCF771A5DE8E3BB12F5A3 /* UdpSocket.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = UdpSocket.h; path = ../../../../of_v0.9.8_osx_release/addons/ofxOsc/libs/oscpack/src/ip/UdpSocket.h; sourceTree = SOURCE_ROOT; };
 		4D1F532D1E3BF262009C6F11 /* ParameterServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParameterServer.cpp; sourceTree = "<group>"; };
 		4D1F532E1E3BF262009C6F11 /* ParameterServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParameterServer.h; sourceTree = "<group>"; };
+		4D1F53301E3C031B009C6F11 /* Sender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sender.cpp; sourceTree = "<group>"; };
+		4D1F53311E3C031B009C6F11 /* Sender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sender.h; sourceTree = "<group>"; };
 		4DCB61411E3B616600025EF6 /* ParameterSync.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParameterSync.cpp; sourceTree = "<group>"; };
 		4DCB61421E3B616600025EF6 /* ParameterSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParameterSync.h; sourceTree = "<group>"; };
 		4DCB61431E3B616600025EF6 /* Receiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Receiver.cpp; sourceTree = "<group>"; };
@@ -198,6 +201,8 @@
 				4DCB61661E3B68AD00025EF6 /* Layout.h */,
 				4D1F532D1E3BF262009C6F11 /* ParameterServer.cpp */,
 				4D1F532E1E3BF262009C6F11 /* ParameterServer.h */,
+				4D1F53301E3C031B009C6F11 /* Sender.cpp */,
+				4D1F53311E3C031B009C6F11 /* Sender.h */,
 			);
 			path = ofxOscPlus;
 			sourceTree = "<group>";
@@ -560,6 +565,7 @@
 				FFC2D4A54D41A1D0DA0B679E /* IpEndpointName.cpp in Sources */,
 				4DCB615E1E3B61C900025EF6 /* ofxPanel.cpp in Sources */,
 				4DCB615C1E3B61C900025EF6 /* ofxGuiGroup.cpp in Sources */,
+				4D1F53321E3C031B009C6F11 /* Sender.cpp in Sources */,
 				4DCB61451E3B616600025EF6 /* ParameterSync.cpp in Sources */,
 				4DCB61B11E3B708100025EF6 /* jsoncpp.cpp in Sources */,
 				101907C4110EF13BAE1F5418 /* NetworkingUtils.cpp in Sources */,
