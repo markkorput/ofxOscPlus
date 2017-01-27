@@ -10,7 +10,6 @@ ParameterSync::~ParameterSync(){
     registerCallbacks(false);
 }
 
-
 void ParameterSync::setup(ofParameterGroup & group, int localPort, const std::string& host, int remotePort){
     if(localPort == remotePort){
         ofLogWarning() << "ofxOscPlus::ParameterSync::setup got same localPort as remotePort";

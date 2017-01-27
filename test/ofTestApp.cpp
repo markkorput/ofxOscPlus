@@ -12,6 +12,8 @@ void ofTestApp::run(){
 void ofTestApp::testLayout(){
     testLayoutSerialize();
     testLayoutDeserialize();
+    testDiscovery();
+    testParameterServer();
 }
 
 void ofTestApp::testLayoutSerialize(){
@@ -81,6 +83,14 @@ void ofTestApp::testLayoutDeserialize(){
     // test_eq(destParams.getType("yezno"), typeid(ofParameter<bool>).name(), "initialized bool param");
     test_eq(destParams.getBool("yezno").get(), true, "initialized float param");
     test_eq(destParams.getPoint("punto").get(), ofPoint(3.0f), "initialized float param");
+}
+
+void ofTestApp::testDiscovery(){
+    // TODO
+}
+
+void ofTestApp::testParameterServer(){
+    
 }
 
 #endif // DEBUG
