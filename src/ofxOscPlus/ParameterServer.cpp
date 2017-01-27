@@ -1,5 +1,7 @@
 #include "ParameterServer.h"
 
+#include "Layout.h"
+
 using namespace ofxOscPlus;
 
 ParameterServer::ParameterServer() : updatingSender(nullptr){
@@ -51,6 +53,23 @@ void ParameterServer::update(){
                     continue;
                 }
             }
+        }
+
+        if(msg.getAddress() == "/ofxOscPlus/layout" && msg.getNumArgs() == 2){
+            // create layout payload in json-format
+            Layout layout;
+            layout.setup(*parameterGroup);
+            string layoutJsonText = layout.toJsonText();
+
+            // create osc response message
+            ofxOscMessage responseMsg;
+            responseMsg.setAddress("/ofxOscPlus/layout");
+            responseMsg.addStringArg(layoutJsonText);
+
+            // send message
+            Sender sender;
+            sender.setup(msg.getArgAsString(0), msg.getArgAsInt(1));
+            sender.sendMessage(responseMsg, false);
         }
 
         updatingSender = getSender(msg.getRemoteIp(), msg.getRemotePort());
