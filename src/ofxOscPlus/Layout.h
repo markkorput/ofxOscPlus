@@ -11,8 +11,9 @@ namespace ofxOscPlus {
         Layout();
         void setup(ofParameterGroup &rootGroup);
         
+        
         bool toJson(Json::Value &json);
-
+        string toJsonText();
         bool fromJson(const string& jsonText);
         bool fromJson(const Json::Value &json);
 
@@ -24,8 +25,8 @@ namespace ofxOscPlus {
         Json::Value& serialize(const ofParameter<bool> param, Json::Value &json);
         Json::Value& serialize(const ofParameter<ofColor> param, Json::Value &json);
         Json::Value& serialize(const ofParameter<ofPoint> param, Json::Value &json);
-
         bool deserialize(const Json::Value& json, ofParameterGroup &group);
+
     private: // attributes
         
         ofParameterGroup *rootGroup;

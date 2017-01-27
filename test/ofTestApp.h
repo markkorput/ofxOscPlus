@@ -15,4 +15,5 @@ private: // methods
     void testLayoutDeserialize();
     void testDiscovery();
     void testParameterServer();
+    void testParameterServerLayout();
 };

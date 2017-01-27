@@ -17,6 +17,7 @@ void ofTestApp::testLayout(){
     testLayoutDeserialize();
     testDiscovery();
     testParameterServer();
+    testParameterServerLayout();
 }
 
 void ofTestApp::testLayoutSerialize(){
@@ -68,7 +69,7 @@ void ofTestApp::testLayoutDeserialize(){
     ofxOscPlus::Layout sourceLayout, destLayout;
     sourceLayout.setup(sourceParams);
     destLayout.setup(destParams);
-    
+
     test_eq(destParams.getName(), "", "uninitialized group name should be empty");
     test_eq(destParams.size(), 0, "uninitialized group size should be zero");
 
@@ -93,7 +94,7 @@ void ofTestApp::testDiscovery(){
 
 void ofTestApp::testParameterServer(){
     // setup params
-    ofParameterGroup sourceParams, destParams;
+    ofParameterGroup sourceParams;
     ofParameter<float> flParam;
     ofParameter<ofColor> clrParam;
     ofParameter<bool> bParam;
@@ -121,23 +122,25 @@ void ofTestApp::testParameterServer(){
     msg.addStringArg("127.0.0.1");
     msg.addIntArg(8089);
     sender.sendMessage(msg, false);
-    
-    // server processes signup request and add 127.0.0.1:8089 to list of connected clients
+
+    // wait until server has received and processed signup message
     {
-        // wait until server param change arrives at our receiver "client"
+        
         float timeout = ofGetElapsedTimef() + 2.0f;
         while(ofGetElapsedTimef() < timeout){
+            // server processes signup request and add 127.0.0.1:8089 to list of connected clients
             server.update();
             if(server.getClientCount() == 1)
                 break;
         }
+        
+        test_eq(server.getClientCount(), 1, "client signup received");
     }
 
     // make param change
-    test_eq(server.getClientCount(), 1, "client signup received");
     flParam.set(2.4f);
 
-    // wait until server param change arrives at our receiver "client"
+    // wait until param change notification arrives at our "client"
     {
         float timeout = ofGetElapsedTimef() + 2.0f;
         while(ofGetElapsedTimef() < timeout)
@@ -145,11 +148,63 @@ void ofTestApp::testParameterServer(){
                 break;
     }
     
-    // verify that we got a message
+    // verify the notification
     test_eq(receiver.getNextMessage(msg), true, "receive param change message");
     test_eq(msg.getAddress(), "/testGroup/decimal", "updated param address");
     test_eq(msg.getNumArgs(), 1, "new param value arg");
     test_eq(msg.getArgAsFloat(0), 2.4f, "new param value");
+}
+
+void ofTestApp::testParameterServerLayout(){
+    // setup params
+    ofParameterGroup sourceParams;
+    ofParameter<float> flParam;
+    ofParameter<ofColor> clrParam;
+    ofParameter<bool> bParam;
+    ofParameter<ofPoint> pointParam;
+    
+    sourceParams.setName("testGroup");
+    sourceParams.add(flParam.set("decimal", 1.0f));
+    sourceParams.add(clrParam.set("color", ofColor::white));
+    sourceParams.add(bParam.set("yezno", true));
+    sourceParams.add(pointParam.set("punto", ofPoint(3.0f)));
+
+    // create param server
+    ofxOscPlus::ParameterServer server;
+    server.setup(sourceParams, 8081);
+
+    // create "client"
+    ofxOscPlus::Receiver receiver;
+    receiver.setup(8089);
+
+    // request param layout
+    ofxOscPlus::Sender sender;
+    sender.setup("127.0.0.1", 8081);
+    ofxOscMessage msg;
+    msg.setAddress("/ofxOscPlus/layout");
+    msg.addStringArg("127.0.0.1");
+    msg.addIntArg(8089);
+    sender.sendMessage(msg, false);
+
+    // wait server responds
+    {
+        float timeout = ofGetElapsedTimef() + 2.0f;
+        while(ofGetElapsedTimef() < timeout){
+            server.update();
+            if(receiver.hasWaitingMessages())
+                break;
+        }
+    }
+
+    // verify the notification
+    ofxOscPlus::Layout layout;
+    layout.setup(sourceParams);
+    string expected = layout.toJsonText();
+
+    test_eq(receiver.getNextMessage(msg), true, "receive layout message");
+    test_eq(msg.getAddress(), "/ofxOscPlus/layout", "layout address");
+    test_eq(msg.getNumArgs(), 1, "one layout arg");
+    test_eq(msg.getArgAsString(0), expected, "layout json text");
 }
 
 #endif // DEBUG

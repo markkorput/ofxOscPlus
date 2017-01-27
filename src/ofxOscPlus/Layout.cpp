@@ -21,6 +21,15 @@ bool Layout::toJson(Json::Value &json){
     return true;
 }
 
+string Layout::toJsonText(){
+    Json::Value val;
+
+    if(toJson(val))
+        return val.toStyledString();
+
+    return "";
+}
+
 Json::Value& Layout::serialize(const ofParameterGroup &group, Json::Value &json){
     for(int i=0; i<(int)group.size(); i++){
         string type = group.getType(i);
