@@ -5,8 +5,8 @@ Client::Client(){
     params.add(sizeParam.set("size", 5.0f));
 }
 
-void Client::setup(int in_port, string out_host, int out_port){
-    gui.setup(params);
+void Client::setup(int in_port, string out_host, int out_port, float x, float y){
+    gui.setup(params, "", x, y);
     sync.setup(params, in_port, out_host, out_port);
 }
 
