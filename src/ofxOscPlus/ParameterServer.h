@@ -22,7 +22,11 @@ namespace ofxOscPlus {
         
         void registerCallbacks(bool _register=true);
         ofAbstractParameter* paramForMessage(const ofxOscMessage& message);
-        shared_ptr<Sender> getSender(string host, int port);
+        
+        shared_ptr<Sender> getSender(const string &host, int port);
+        void signup(const string &host, int port);
+        bool signoff(const string &host, int port);
+        void sendLayout(const string &host, int port);
 
     private: // callback methods
         
