@@ -22,6 +22,9 @@
 		4DCB61611E3B61C900025EF6 /* ofxToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DCB61581E3B61C900025EF6 /* ofxToggle.cpp */; };
 		4DCB61641E3B622F00025EF6 /* client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DCB61621E3B622F00025EF6 /* client.cpp */; };
 		4DCB61671E3B68AD00025EF6 /* Layout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DCB61651E3B68AD00025EF6 /* Layout.cpp */; };
+		4DCB616F1E3B6B1400025EF6 /* ofTestApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DCB616D1E3B6B1400025EF6 /* ofTestApp.cpp */; };
+		4DCB61B11E3B708100025EF6 /* jsoncpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DCB619E1E3B708100025EF6 /* jsoncpp.cpp */; };
+		4DCB61B41E3B708100025EF6 /* ofxJSONElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4DCB61A31E3B708100025EF6 /* ofxJSONElement.cpp */; };
 		4FBBB40BF6D0BEB8A441A14C /* OscPrintReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6026CF01F6F510C08353BF91 /* OscPrintReceivedElements.cpp */; };
 		6378D74BEE5205C4B1EF0627 /* OscOutboundPacketStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2A40F35F6B4A252A9BC71A3 /* OscOutboundPacketStream.cpp */; };
 		6778B94227FE9840725EA0F5 /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 68CB9B6F6C9023B99E1D9306 /* ofxOscReceiver.cpp */; };
@@ -99,6 +102,15 @@
 		4DCB61631E3B622F00025EF6 /* client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client.h; sourceTree = "<group>"; };
 		4DCB61651E3B68AD00025EF6 /* Layout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Layout.cpp; sourceTree = "<group>"; };
 		4DCB61661E3B68AD00025EF6 /* Layout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Layout.h; sourceTree = "<group>"; };
+		4DCB616B1E3B6ADC00025EF6 /* ofxUnitTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUnitTests.h; sourceTree = "<group>"; };
+		4DCB616D1E3B6B1400025EF6 /* ofTestApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofTestApp.cpp; sourceTree = "<group>"; };
+		4DCB616E1E3B6B1400025EF6 /* ofTestApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofTestApp.h; sourceTree = "<group>"; };
+		4DCB619B1E3B708100025EF6 /* json-forwards.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "json-forwards.h"; sourceTree = "<group>"; };
+		4DCB619C1E3B708100025EF6 /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = json.h; sourceTree = "<group>"; };
+		4DCB619E1E3B708100025EF6 /* jsoncpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = jsoncpp.cpp; sourceTree = "<group>"; };
+		4DCB61A21E3B708100025EF6 /* ofxJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxJSON.h; sourceTree = "<group>"; };
+		4DCB61A31E3B708100025EF6 /* ofxJSONElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxJSONElement.cpp; sourceTree = "<group>"; };
+		4DCB61A41E3B708100025EF6 /* ofxJSONElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxJSONElement.h; sourceTree = "<group>"; };
 		6026CF01F6F510C08353BF91 /* OscPrintReceivedElements.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = OscPrintReceivedElements.cpp; path = ../../../../of_v0.9.8_osx_release/addons/ofxOsc/libs/oscpack/src/osc/OscPrintReceivedElements.cpp; sourceTree = SOURCE_ROOT; };
 		6723333891EC5284175A6893 /* OscPrintReceivedElements.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscPrintReceivedElements.h; path = ../../../../of_v0.9.8_osx_release/addons/ofxOsc/libs/oscpack/src/osc/OscPrintReceivedElements.h; sourceTree = SOURCE_ROOT; };
 		68CB9B6F6C9023B99E1D9306 /* ofxOscReceiver.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxOscReceiver.cpp; path = ../../../../of_v0.9.8_osx_release/addons/ofxOsc/src/ofxOscReceiver.cpp; sourceTree = SOURCE_ROOT; };
@@ -218,6 +230,94 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		4DCB61691E3B6ADC00025EF6 /* ofxUnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				4DCB616A1E3B6ADC00025EF6 /* src */,
+			);
+			name = ofxUnitTests;
+			path = ../../../addons/ofxUnitTests;
+			sourceTree = "<group>";
+		};
+		4DCB616A1E3B6ADC00025EF6 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				4DCB616B1E3B6ADC00025EF6 /* ofxUnitTests.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		4DCB616C1E3B6B1400025EF6 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				4DCB616D1E3B6B1400025EF6 /* ofTestApp.cpp */,
+				4DCB616E1E3B6B1400025EF6 /* ofTestApp.h */,
+			);
+			path = test;
+			sourceTree = "<group>";
+		};
+		4DCB61701E3B708100025EF6 /* ofxJSON */ = {
+			isa = PBXGroup;
+			children = (
+				4DCB61971E3B708100025EF6 /* libs */,
+				4DCB61A11E3B708100025EF6 /* src */,
+			);
+			name = ofxJSON;
+			path = ../../../addons/ofxJSON;
+			sourceTree = "<group>";
+		};
+		4DCB61971E3B708100025EF6 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				4DCB61981E3B708100025EF6 /* jsoncpp */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		4DCB61981E3B708100025EF6 /* jsoncpp */ = {
+			isa = PBXGroup;
+			children = (
+				4DCB61991E3B708100025EF6 /* include */,
+				4DCB619D1E3B708100025EF6 /* src */,
+			);
+			path = jsoncpp;
+			sourceTree = "<group>";
+		};
+		4DCB61991E3B708100025EF6 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				4DCB619A1E3B708100025EF6 /* json */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		4DCB619A1E3B708100025EF6 /* json */ = {
+			isa = PBXGroup;
+			children = (
+				4DCB619B1E3B708100025EF6 /* json-forwards.h */,
+				4DCB619C1E3B708100025EF6 /* json.h */,
+			);
+			path = json;
+			sourceTree = "<group>";
+		};
+		4DCB619D1E3B708100025EF6 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				4DCB619E1E3B708100025EF6 /* jsoncpp.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		4DCB61A11E3B708100025EF6 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				4DCB61A21E3B708100025EF6 /* ofxJSON.h */,
+				4DCB61A31E3B708100025EF6 /* ofxJSONElement.cpp */,
+				4DCB61A41E3B708100025EF6 /* ofxJSONElement.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		641362CA659FAFEE4E81001B /* posix */ = {
 			isa = PBXGroup;
 			children = (
@@ -245,6 +345,8 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				4DCB61701E3B708100025EF6 /* ofxJSON */,
+				4DCB61691E3B6ADC00025EF6 /* ofxUnitTests */,
 				4DCB61471E3B61C900025EF6 /* ofxGui */,
 				E6053AB7FEC63D5F83825B88 /* ofxOsc */,
 			);
@@ -293,6 +395,7 @@
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
+				4DCB616C1E3B6B1400025EF6 /* test */,
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
 				6948EE371B920CB800B5AC1A /* local_addons */,
@@ -432,6 +535,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DCB616F1E3B6B1400025EF6 /* ofTestApp.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				4DCB61601E3B61C900025EF6 /* ofxSliderGroup.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
@@ -441,6 +545,7 @@
 				FD615648E4C3A99EB892EBBC /* ofxOscBundle.cpp in Sources */,
 				B828CF81B4DDC4A247986B85 /* ofxOscMessage.cpp in Sources */,
 				4DCB615F1E3B61C900025EF6 /* ofxSlider.cpp in Sources */,
+				4DCB61B41E3B708100025EF6 /* ofxJSONElement.cpp in Sources */,
 				4DCB61641E3B622F00025EF6 /* client.cpp in Sources */,
 				B40F56881F81A15E22D6B574 /* ofxOscParameterSync.cpp in Sources */,
 				6778B94227FE9840725EA0F5 /* ofxOscReceiver.cpp in Sources */,
@@ -450,6 +555,7 @@
 				4DCB615E1E3B61C900025EF6 /* ofxPanel.cpp in Sources */,
 				4DCB615C1E3B61C900025EF6 /* ofxGuiGroup.cpp in Sources */,
 				4DCB61451E3B616600025EF6 /* ParameterSync.cpp in Sources */,
+				4DCB61B11E3B708100025EF6 /* jsoncpp.cpp in Sources */,
 				101907C4110EF13BAE1F5418 /* NetworkingUtils.cpp in Sources */,
 				4DCB61671E3B68AD00025EF6 /* Layout.cpp in Sources */,
 				4B322C5144D70015FFC94E02 /* UdpSocket.cpp in Sources */,
@@ -566,6 +672,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = NONE;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
 					../../../../of_v0.9.8_osx_release/addons/ofxOsc/libs,
@@ -576,12 +683,15 @@
 					../../../../of_v0.9.8_osx_release/addons/ofxOsc/libs/oscpack/src/ip/win32,
 					../../../../of_v0.9.8_osx_release/addons/ofxOsc/libs/oscpack/src/osc,
 					../../../../of_v0.9.8_osx_release/addons/ofxOsc/src,
+					"$(OF_ADDONS_PATH)/ofxJSON/libs/jsoncpp/include",
 				);
 				ICON = "$(ICON_NAME_DEBUG)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OF_ADDONS_PATH = "$(OF_PATH)/addons";
+				OF_PATH = ../../../;
 				PRODUCT_NAME = "$(TARGET_NAME)Debug";
 				WRAPPER_EXTENSION = app;
 			};
@@ -610,12 +720,15 @@
 					../../../../of_v0.9.8_osx_release/addons/ofxOsc/libs/oscpack/src/ip/win32,
 					../../../../of_v0.9.8_osx_release/addons/ofxOsc/libs/oscpack/src/osc,
 					../../../../of_v0.9.8_osx_release/addons/ofxOsc/src,
+					"$(OF_ADDONS_PATH)/ofxJSON/libs/jsoncpp/include",
 				);
 				ICON = "$(ICON_NAME_RELEASE)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OF_ADDONS_PATH = "$(OF_PATH)/addons";
+				OF_PATH = ../../../;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 				baseConfigurationReference = E4EB6923138AFD0F00A09F29;
