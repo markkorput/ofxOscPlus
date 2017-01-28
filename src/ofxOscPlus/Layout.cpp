@@ -116,8 +116,8 @@ bool Layout::fromJson(const Json::Value &json){
 
     // don't use rootGroup->clear because that also resets the change event
     // which might relied upon by event listeners
-    while(rootGroup->size() > 0)
-        rootGroup->remove(0);
+    for(int i=rootGroup->size()-1; i>=0; i--)
+        rootGroup->remove(i);
 
     for(auto attr : json.getMemberNames()){
         if(json[attr]["type"].type() != Json::nullValue)

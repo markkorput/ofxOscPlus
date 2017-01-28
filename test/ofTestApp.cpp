@@ -264,12 +264,12 @@ void ofTestApp::testClientMultipleLayout(){
     ofParameter<ofColor> clrParam;
     ofParameter<bool> bParam;
     ofParameter<ofPoint> pointParam;
-    
+
     sourceParams.setName("testGroup");
     sourceParams.add(flParam.set("decimal", 5.2f));
     sourceParams.add(clrParam.set("color", ofColor::blue));
     sourceParams.add(bParam.set("yezno", true));
-    
+
     // create param server
     ofxOscPlus::ParameterServer server;
     server.setup(sourceParams);
@@ -311,7 +311,7 @@ void ofTestApp::testClientMultipleLayout(){
     }
 
     test_eq(destParams.size(), 4, "adopted updated server-side params");
-    if(destParams.size() == 4){
+    if(destParams.size() >= 4){
         test_eq(destParams.getPoint("punto").get(), ofPoint(3.0f), "point param and value");
     }
 }
