@@ -28,7 +28,7 @@ void ParameterServer::update(){
         if(!receiver.getNextMessage(msg))
             break;
 
-        ofLog() << "server got message: " << msg.getAddress();
+        // ofLog() << "server got message: " << msg.getAddress();
 
         if(msg.getAddress() == "/ofxOscPlus/signup"){
             if(msg.getNumArgs() == 2)
@@ -101,7 +101,7 @@ bool ParameterServer::signoff(const string &host, int port){
     
     if(sender == nullptr)
         return false;
-    
+
     for(auto it=senders.begin(); it!=senders.end(); it++){
         if(it->get() == sender.get()){
             senders.erase(it);

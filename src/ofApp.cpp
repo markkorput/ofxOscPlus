@@ -2,25 +2,59 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    client1.setup(6666, "localhost", 6667);
-    client2.setup(6667, "localhost", 6666, 300);
+    // setup server
+    serverParams.setName("TestParams");
+    serverParams.add(sizeParam.set("size", 5.0f));
+    server.setup(serverParams);
+    serverGui.setup(serverParams);
+    
+    // setup client
+    clientParams.setName("ClientParams");
+    client.setup(clientParams);
+    onLayoutUpdate(client);
+
+    ofAddListener(client.layoutUpdateEvent, this, &ofApp::onLayoutUpdate);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    client1.update();
-    client2.update();
+    server.update();
+    client.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    client1.draw();
-    client2.draw();
+    serverGui.draw();
+    clientGui.draw();
+}
+
+
+void ofApp::onAddParamBtn(){
+    shared_ptr<ofParameter<float>> param = make_shared<ofParameter<float>>();
+    serverParams.add(param->set("Dynamic Param #" + ofToString(dynamicParams.size()+1), ofRandom(10.0f)));
+    dynamicParams.push_back(param);
+    serverGui.setup(serverParams);
+}
+
+void ofApp::onSyncBtn(){
+    client.requestLayout();
+}
+
+//--------------------------------------------------------------
+void ofApp::onLayoutUpdate(ofxOscPlus::ParameterClient & client){
+    clientGui.setup(clientParams, "", 400);
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    if(key == '1'){
+        onAddParamBtn();
+        return;
+    }
+    
+    if(key == '2'){
+        onSyncBtn();
+    }
 }
 
 //--------------------------------------------------------------

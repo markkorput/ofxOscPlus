@@ -113,15 +113,18 @@ bool Layout::fromJson(const Json::Value &json){
         ofLogWarning() << "didn't expect an array";
         return false;
     }
-    
-    ofParameterGroup* currentGroup = rootGroup;
+
+    // don't use rootGroup->clear because that also resets the change event
+    // which might relied upon by event listeners
+    while(rootGroup->size() > 0)
+        rootGroup->remove(0);
 
     for(auto attr : json.getMemberNames()){
         if(json[attr]["type"].type() != Json::nullValue)
             continue;
         
-        currentGroup->setName(attr);
-        deserialize(json[attr], *currentGroup);
+        rootGroup->setName(attr);
+        deserialize(json[attr], *rootGroup);
     }
     
     return true;

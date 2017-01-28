@@ -15,6 +15,7 @@ void ParameterClient::setup(ofParameterGroup &paramGroup, int port, int limit, s
     receiver.setup(nPort);
 
     registerCallbacks();
+    signup();
     requestLayout();
 }
 
@@ -28,7 +29,7 @@ void ParameterClient::update(){
         if(!receiver.getNextMessage(msg))
             break;
 
-        ofLog() << "client got OSC message: " << msg.getAddress();
+        // ofLogVerbose() << "client got OSC message: " << msg.getAddress();
         if(msg.getAddress() == "/ofxOscPlus/layout"){
             if(msg.getNumArgs() != 1){
                 ofLogWarning() << "expected 1 arg with layout message";
@@ -38,6 +39,7 @@ void ParameterClient::update(){
             Layout layout;
             layout.setup(*parameterGroup);
             layout.fromJson(msg.getArgAsString(0));
+            ofNotifyEvent(layoutUpdateEvent, *this, this);
             continue;
         }
 
@@ -55,12 +57,18 @@ void ParameterClient::registerCallbacks(bool _register){
     }
 }
 
+void ParameterClient::signup(){
+    ofxOscMessage msg;
+    msg.setAddress("/ofxOscPlus/signup");
+    msg.addIntArg(nPort);
+    sender.sendMessage(msg, false);
+}
+
 void ParameterClient::requestLayout(){
     ofxOscMessage msg;
     msg.setAddress("/ofxOscPlus/layout");
     msg.addIntArg(nPort);
     sender.sendMessage(msg, false);
-    ofLog() << "client sending message: " << msg.getAddress();
 }
 
 void ParameterClient::onParameterChanged( ofAbstractParameter & parameter ){

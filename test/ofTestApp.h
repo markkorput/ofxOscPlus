@@ -17,4 +17,5 @@ private: // methods
     void testParameterServer();
     void testParameterServerLayout();
     void testClientLayout();
+    void testClientMultipleLayout();
 };
