@@ -12,6 +12,7 @@ void Client::setup(int port, float x, float y){
     client.setup(params, port);
 
     ofAddListener(client.layoutUpdateEvent, this, &Client::onLayoutUpdate);
+    closeBtn.addListener(this, &Client::onCloseBtn);
 }
 
 void Client::update(){
@@ -24,4 +25,9 @@ void Client::draw(){
 
 void Client::onLayoutUpdate(ofxOscPlus::ParameterClient & client){
     gui.setup(params, "", x, y);
+    gui.add(closeBtn.setup("close client"));
+}
+
+void Client::onCloseBtn(){
+    client.disconnect();
 }

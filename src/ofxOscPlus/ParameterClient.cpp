@@ -19,6 +19,10 @@ void ParameterClient::setup(ofParameterGroup &paramGroup, int port, int limit, s
     requestLayout();
 }
 
+void ParameterClient::destroy(){
+    registerCallbacks(false);
+}
+
 void ParameterClient::update(){
     ofxOscMessage msg;
     
@@ -49,6 +53,17 @@ void ParameterClient::update(){
     }
 }
 
+void ParameterClient::requestLayout(){
+    ofxOscMessage msg;
+    msg.setAddress("/ofxOscPlus/layout");
+    msg.addIntArg(nPort);
+    sender.sendMessage(msg, false);
+}
+
+void ParameterClient::disconnect(){
+    signoff();
+}
+
 void ParameterClient::registerCallbacks(bool _register){
     if(_register){
         ofAddListener(parameterGroup->parameterChangedE(), this, &ParameterClient::onParameterChanged);
@@ -64,9 +79,9 @@ void ParameterClient::signup(){
     sender.sendMessage(msg, false);
 }
 
-void ParameterClient::requestLayout(){
+void ParameterClient::signoff(){
     ofxOscMessage msg;
-    msg.setAddress("/ofxOscPlus/layout");
+    msg.setAddress("/ofxOscPlus/signoff");
     msg.addIntArg(nPort);
     sender.sendMessage(msg, false);
 }
@@ -75,4 +90,3 @@ void ParameterClient::onParameterChanged( ofAbstractParameter & parameter ){
     if(bUpdating) return;
     sender.sendParameter(parameter);
 }
-

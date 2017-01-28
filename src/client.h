@@ -22,11 +22,13 @@ class Client {
 
     private: // callback methods
     
-    void onLayoutUpdate(ofxOscPlus::ParameterClient & client);
+        void onLayoutUpdate(ofxOscPlus::ParameterClient & client);
+        void onCloseBtn();
 
     private: // attributes
     
         ofxPanel gui;
+        ofxButton closeBtn;
         ofxOscPlus::ParameterClient client;
         float x, y;
 };

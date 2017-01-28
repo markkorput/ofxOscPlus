@@ -119,7 +119,7 @@ bool ParameterServer::signoff(const string &host, int port){
         }
     }
 
-    ofLogWarning() << "Could not find sender instance to signoff (host: " << sender->getHost() << ", port: " << sender->getPort() << ")";
+    ofLogWarning() << "Could not find sender instance to signoff (host: " << host << ", port: " << port << ")";
     return false;
 }
 

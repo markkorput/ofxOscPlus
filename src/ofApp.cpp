@@ -37,15 +37,8 @@ void ofApp::onAddParamBtn(){
 }
 
 void ofApp::onAddClientBtn(){
-    int effectiveWidth = ofGetWidth() - 200;
-    int newClientIndex = clients.size();
-    int guiIndex = newClientIndex+1;
-    int guiPos = (guiIndex+1) * 150.0f;
-    float guiY = 10.0f + guiPos/effectiveWidth * 150.0f;
-    float guiX = 200.0f + guiPos % effectiveWidth;
-
     shared_ptr<Client> client = make_shared<Client>();
-    client->setup(8085+newClientIndex, guiX, guiY);
+    client->setup(8085+clients.size(), ofRandom(ofGetWidth()), ofRandom(ofGetHeight()));
     clients.push_back(client);
 }
 
