@@ -2,18 +2,26 @@
 
 Client::Client(){
     params.setName("ParamClient");
-    params.add(sizeParam.set("size", 5.0f));
 }
 
-void Client::setup(int in_port, string out_host, int out_port, float x, float y){
+void Client::setup(int port, float x, float y){
+    this->x = x;
+    this->y = y;
+
     gui.setup(params, "", x, y);
-    // sync.setup(params, in_port, out_host, out_port);
+    client.setup(params, port);
+
+    ofAddListener(client.layoutUpdateEvent, this, &Client::onLayoutUpdate);
 }
 
 void Client::update(){
-    // sync.update();
+    client.update();
 }
 
 void Client::draw(){
     gui.draw();
+}
+
+void Client::onLayoutUpdate(ofxOscPlus::ParameterClient & client){
+    gui.setup(params, "", x, y);
 }

@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxOscPlus/ParameterServer.h"
-#include "ofxOscPlus/ParameterClient.h"
+#include "client.h"
 
 class ofApp : public ofBaseApp{
 
@@ -30,15 +30,14 @@ class ofApp : public ofBaseApp{
     
         void onLayoutUpdate(ofxOscPlus::ParameterClient & client);
         void onAddParamBtn();
-        void onSyncBtn();
+        void onAddClientBtn();
 
     private: // attributes
     
         ofParameterGroup serverParams, clientParams;
         ofParameter<float> sizeParam;
-        ofxPanel serverGui, clientGui;
+        ofxPanel serverGui;
         vector<shared_ptr<ofAbstractParameter>> dynamicParams;
-    
         ofxOscPlus::ParameterServer server;
-        ofxOscPlus::ParameterClient client;
+        vector<shared_ptr<Client>> clients;
 };

@@ -16,7 +16,7 @@ namespace ofxOscPlus {
         ParameterClient();
         void setup(ofParameterGroup & group, int port=8082, int limit=10, string serverHost="127.0.0.1", int serverPort=8081);
         void update();
-
+        void drawDebug(int x=0, int y=0);
         void requestLayout();
 
     private: // methods

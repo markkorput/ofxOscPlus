@@ -69,6 +69,16 @@ void ParameterServer::update(){
     }
 }
 
+void ParameterServer::drawDebug(int x, int y){
+    string info;
+    info = "ofxOscPlus::ParameterServer\n---------------------------";
+    info += "\n\nNumber of clients connected: " + ofToString(getClientCount());
+    for(auto sender : senders){
+        info += "\nClient: " + sender->getHost() + ":" + ofToString(sender->getPort());
+    }
+    ofDrawBitmapStringHighlight(info, x, y);
+}
+
 void ParameterServer::registerCallbacks(bool _register){
     if(_register){
         ofAddListener(parameterGroup->parameterChangedE(), this, &ParameterServer::onParameterChanged);
@@ -98,19 +108,18 @@ void ParameterServer::signup(const string &host, int port){
 bool ParameterServer::signoff(const string &host, int port){
     // create sender instance
     shared_ptr<Sender> sender = getSender(host, port);
-    
-    if(sender == nullptr)
-        return false;
 
-    for(auto it=senders.begin(); it!=senders.end(); it++){
-        if(it->get() == sender.get()){
-            senders.erase(it);
-            ofLog() << "ofxOscPlus client signed off (host: " << sender->getHost() << ", port: " << sender->getPort() << ")";
-            return true;
+    if(sender != nullptr){
+        for(auto it=senders.begin(); it!=senders.end(); it++){
+            if(it->get() == sender.get()){
+                senders.erase(it);
+                ofLog() << "ofxOscPlus client signed off (host: " << sender->getHost() << ", port: " << sender->getPort() << ")";
+                return true;
+            }
         }
     }
 
-    ofLogWarning() << "Could not find client to signoff (host: " << sender->getHost() << ", port: " << sender->getPort() << ")";
+    ofLogWarning() << "Could not find sender instance to signoff (host: " << sender->getHost() << ", port: " << sender->getPort() << ")";
     return false;
 }
 
