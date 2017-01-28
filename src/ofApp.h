@@ -1,6 +1,8 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxGui.h"
+#include "ofxOscPlus/ParameterServer.h"
 #include "client.h"
 
 class ofApp : public ofBaseApp{
@@ -22,8 +24,20 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
+        void setupServerGui();
+
+    private: // callbacks
+    
+        void onLayoutUpdate(ofxOscPlus::ParameterClient & client);
+        void onAddParamBtn();
+        void onAddClientBtn();
+
     private: // attributes
     
-        Client client1, client2;
-
+        ofParameterGroup serverParams, clientParams;
+        ofParameter<float> sizeParam;
+        ofxPanel serverGui;
+        vector<shared_ptr<ofAbstractParameter>> dynamicParams;
+        ofxOscPlus::ParameterServer server;
+        vector<shared_ptr<Client>> clients;
 };

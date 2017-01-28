@@ -20,6 +20,7 @@ void ofTestApp::testLayout(){
     testParameterServer();
     testParameterServerLayout();
     testClientLayout();
+    testClientMultipleLayout();
 }
 
 void ofTestApp::testLayoutSerialize(){
@@ -246,11 +247,71 @@ void ofTestApp::testClientLayout(){
     }
 
     // verify sync
+    test_eq(server.getClientCount(), 1, "client conected to server");
     test_eq(destParams.size(), sourceParams.size(), "adopted all server-side params");
     if(destParams.size() > 0){
         test_eq(destParams.getFloat("decimal").get(), 5.2f, "float param and value");
         test_eq(destParams.getColor("color").get(), ofColor::blue, "color param and value");
         test_eq(destParams.getBool("yezno").get(), true, "bool param and value");
+        test_eq(destParams.getPoint("punto").get(), ofPoint(3.0f), "point param and value");
+    }
+}
+
+void ofTestApp::testClientMultipleLayout(){
+    // setup params
+    ofParameterGroup sourceParams, destParams;
+    ofParameter<float> flParam;
+    ofParameter<ofColor> clrParam;
+    ofParameter<bool> bParam;
+    ofParameter<ofPoint> pointParam;
+
+    sourceParams.setName("testGroup");
+    sourceParams.add(flParam.set("decimal", 5.2f));
+    sourceParams.add(clrParam.set("color", ofColor::blue));
+    sourceParams.add(bParam.set("yezno", true));
+
+    // create param server
+    ofxOscPlus::ParameterServer server;
+    server.setup(sourceParams);
+    
+    // pre-connection status; params empty
+    test_eq(destParams.size(), 0, "no client-side params yet");
+    
+    // create client
+    ofxOscPlus::ParameterClient client;
+    client.setup(destParams);
+    
+    // wait until initial sync completes
+    {
+        float timeout = ofGetElapsedTimef() + 3.0f;
+        while(ofGetElapsedTimef() < timeout){
+            server.update();
+            client.update();
+            if(destParams.size() > 0)
+                break;
+        }
+    }
+
+    // verify sync
+    test_eq(server.getClientCount(), 1, "client conected to server");
+    test_eq(destParams.size(), 3, "adopted all server-side params");
+    
+    sourceParams.add(pointParam.set("punto", ofPoint(3.0f)));
+    client.requestLayout();
+
+    // wait until initial sync completes
+    {
+        float timeout = ofGetElapsedTimef() + 3.0f;
+        while(ofGetElapsedTimef() < timeout){
+            server.update();
+            client.update();
+            if(destParams.size() > 3)
+                break;
+        }
+    }
+
+    test_eq(destParams.size(), 4, "adopted updated server-side params");
+    if(destParams.size() >= 4){
         test_eq(destParams.getPoint("punto").get(), ofPoint(3.0f), "point param and value");
     }
 }

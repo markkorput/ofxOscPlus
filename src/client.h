@@ -1,26 +1,34 @@
 #pragma once
 
-#include "ofMain.h"
+// OF
+#include "ofParameterGroup.h"
+// ofxGui
 #include "ofxGui.h"
-
-#include "ofxOscPlus/ParameterSync.h"
+// ofxOscPlus
+#include "ofxOscPlus/ParameterClient.h"
 
 class Client {
 
     public: // methods
 
         Client();
-        void setup(int in_port, string out_host, int out_port, float x=0.0f, float y=0.0f);
+        void setup(int port=8085, float x=10.0f, float y=10.0f);
         void update();
         void draw();
 
     public: // params
     
         ofParameterGroup params;
-        ofParameter<float> sizeParam;
+
+    private: // callback methods
+    
+        void onLayoutUpdate(ofxOscPlus::ParameterClient & client);
+        void onCloseBtn();
 
     private: // attributes
     
         ofxPanel gui;
-        // ofxOscPlus::ParameterSync sync;
+        ofxButton closeBtn;
+        ofxOscPlus::ParameterClient client;
+        float x, y;
 };

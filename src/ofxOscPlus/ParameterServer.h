@@ -15,6 +15,7 @@ namespace ofxOscPlus {
         ParameterServer();
         void setup(ofParameterGroup & paramGroup, int port=8081, int limit=10);
         void update();
+        void drawDebug(int x=0, int y=0);
         
         int getClientCount(){ return senders.size(); }
 
@@ -22,7 +23,7 @@ namespace ofxOscPlus {
         
         void registerCallbacks(bool _register=true);
         ofAbstractParameter* paramForMessage(const ofxOscMessage& message);
-        
+
         shared_ptr<Sender> getSender(const string &host, int port);
         void signup(const string &host, int port);
         bool signoff(const string &host, int port);
