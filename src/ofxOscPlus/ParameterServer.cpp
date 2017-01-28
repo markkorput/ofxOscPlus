@@ -21,24 +21,45 @@ void ParameterServer::update(){
     ofxOscMessage msg;
 
     for(int i=0; i<nLimit; i++){
+        
         if(!receiver.hasWaitingMessages())
             break;
 
         if(!receiver.getNextMessage(msg))
             break;
 
-        if(msg.getAddress() == "/ofxOscPlus/signup" && msg.getNumArgs() == 2){
-            signup(msg.getArgAsString(0), msg.getArgAsInt(1));
+        ofLog() << "server got message: " << msg.getAddress();
+
+        if(msg.getAddress() == "/ofxOscPlus/signup"){
+            if(msg.getNumArgs() == 2)
+                signup(msg.getArgAsString(0), msg.getArgAsInt(1));
+            else if(msg.getNumArgs() == 1)
+                signup(msg.getRemoteIp(), msg.getArgAsInt(0));
+            else
+                ofLogWarning() << "Expected 1 or 2 arguments with signup OSC request";
+
             continue;
         }
 
-        if(msg.getAddress() == "/ofxOscPlus/signoff" && msg.getNumArgs() == 2){
-            signoff(msg.getArgAsString(0), msg.getArgAsInt(1));
+        if(msg.getAddress() == "/ofxOscPlus/signoff"){
+            if(msg.getNumArgs() == 2)
+                signoff(msg.getArgAsString(0), msg.getArgAsInt(1));
+            else if(msg.getNumArgs() == 1)
+                signoff(msg.getRemoteIp(), msg.getArgAsInt(0));
+            else
+                ofLogWarning() << "Expected 1 or 2 arguments with signoff OSC request";
+
             continue;
         }
 
-        if(msg.getAddress() == "/ofxOscPlus/layout" && msg.getNumArgs() == 2){
-            sendLayout(msg.getArgAsString(0), msg.getArgAsInt(1));
+        if(msg.getAddress() == "/ofxOscPlus/layout"){
+            if(msg.getNumArgs() == 2)
+                sendLayout(msg.getArgAsString(0), msg.getArgAsInt(1));
+            else if(msg.getNumArgs() == 1)
+                sendLayout(msg.getRemoteIp(), msg.getArgAsInt(0));
+            else
+                ofLogWarning() << "Expected 1 or 2 arguments with layout OSC request";
+
             continue;
         }
 

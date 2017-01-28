@@ -9,11 +9,11 @@
 namespace ofxOscPlus {
     
     class ParameterServer {
-        
+
     public: // methods
 
         ParameterServer();
-        void setup(ofParameterGroup & paramGroup, int port, int limit=10);
+        void setup(ofParameterGroup & paramGroup, int port=8081, int limit=10);
         void update();
         
         int getClientCount(){ return senders.size(); }
@@ -39,6 +39,5 @@ namespace ofxOscPlus {
         vector<shared_ptr<Sender>> senders;
         shared_ptr<Sender> updatingSender;
         ofParameterGroup *parameterGroup;
-        bool bUpdating;
     };
 }

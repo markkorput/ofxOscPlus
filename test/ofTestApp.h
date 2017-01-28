@@ -16,4 +16,5 @@ private: // methods
     void testDiscovery();
     void testParameterServer();
     void testParameterServerLayout();
+    void testClientLayout();
 };

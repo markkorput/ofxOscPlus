@@ -2,8 +2,9 @@
 
 #include "ofTestApp.h"
 // ofxOsc
-#include "../src/ofxOscPlus/Layout.h"
 #include "../src/ofxOscPlus/ParameterServer.h"
+#include "../src/ofxOscPlus/ParameterClient.h"
+#include "../src/ofxOscPlus/Layout.h"
 #include "../src/ofxOscPlus/Sender.h"
 #include "../src/ofxOscPlus/Receiver.h"
 
@@ -18,6 +19,7 @@ void ofTestApp::testLayout(){
     testDiscovery();
     testParameterServer();
     testParameterServerLayout();
+    testClientLayout();
 }
 
 void ofTestApp::testLayoutSerialize(){
@@ -205,6 +207,52 @@ void ofTestApp::testParameterServerLayout(){
     test_eq(msg.getAddress(), "/ofxOscPlus/layout", "layout address");
     test_eq(msg.getNumArgs(), 1, "one layout arg");
     test_eq(msg.getArgAsString(0), expected, "layout json text");
+}
+
+void ofTestApp::testClientLayout(){
+    // setup params
+    ofParameterGroup sourceParams, destParams;
+    ofParameter<float> flParam;
+    ofParameter<ofColor> clrParam;
+    ofParameter<bool> bParam;
+    ofParameter<ofPoint> pointParam;
+    
+    sourceParams.setName("testGroup");
+    sourceParams.add(flParam.set("decimal", 5.2f));
+    sourceParams.add(clrParam.set("color", ofColor::blue));
+    sourceParams.add(bParam.set("yezno", true));
+    sourceParams.add(pointParam.set("punto", ofPoint(3.0f)));
+    
+    // create param server
+    ofxOscPlus::ParameterServer server;
+    server.setup(sourceParams);
+
+    // pre-connection status; params empty
+    test_eq(destParams.size(), 0, "no client-side params yet");
+
+    // create client
+    ofxOscPlus::ParameterClient client;
+    client.setup(destParams);
+
+    // wait until initial sync completes
+    {
+        float timeout = ofGetElapsedTimef() + 3.0f;
+        while(ofGetElapsedTimef() < timeout){
+            server.update();
+            client.update();
+            if(destParams.size() > 0)
+                break;
+        }
+    }
+
+    // verify sync
+    test_eq(destParams.size(), sourceParams.size(), "adopted all server-side params");
+    if(destParams.size() > 0){
+        test_eq(destParams.getFloat("decimal").get(), 5.2f, "float param and value");
+        test_eq(destParams.getColor("color").get(), ofColor::blue, "color param and value");
+        test_eq(destParams.getBool("yezno").get(), true, "bool param and value");
+        test_eq(destParams.getPoint("punto").get(), ofPoint(3.0f), "point param and value");
+    }
 }
 
 #endif // DEBUG

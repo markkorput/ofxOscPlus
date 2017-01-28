@@ -22,5 +22,5 @@ class Client {
     private: // attributes
     
         ofxPanel gui;
-        ofxOscPlus::ParameterSync sync;
+        // ofxOscPlus::ParameterSync sync;
 };
