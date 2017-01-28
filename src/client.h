@@ -3,14 +3,14 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 
-#include "ofxOscParameterSyncPlus.h"
+#include "ofxOscPlus/ParameterSync.h"
 
 class Client {
 
     public: // methods
 
         Client();
-        void setup(int in_port, string out_host, int out_port);
+        void setup(int in_port, string out_host, int out_port, float x=0.0f, float y=0.0f);
         void update();
         void draw();
 
@@ -22,6 +22,5 @@ class Client {
     private: // attributes
     
         ofxPanel gui;
-        ofxOscParameterSyncPlus sync;
-
+        // ofxOscPlus::ParameterSync sync;
 };
