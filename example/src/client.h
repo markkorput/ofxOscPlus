@@ -2,10 +2,9 @@
 
 // OF
 #include "ofParameterGroup.h"
-// ofxGui
+// addons
 #include "ofxGui.h"
-// ofxOscPlus
-#include "ofxOscPlus/ParameterClient.h"
+#include "ofxOscPlus.h"
 
 class Client {
 
@@ -17,16 +16,16 @@ class Client {
         void draw();
 
     public: // params
-    
+
         ofParameterGroup params;
 
     private: // callback methods
-    
+
         void onLayoutUpdate(ofxOscPlus::ParameterClient & client);
         void onCloseBtn();
 
     private: // attributes
-    
+
         ofxPanel gui;
         ofxButton closeBtn;
         ofxOscPlus::ParameterClient client;

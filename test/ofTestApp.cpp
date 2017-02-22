@@ -1,12 +1,34 @@
-#ifdef DEBUG
+#include "ofMain.h"
+#include "ofxUnitTests.h"
+#include "ofAppNoWindow.h"
 
-#include "ofTestApp.h"
-// ofxOsc
+// local addon
 #include "../src/ofxOscPlus/ParameterServer.h"
 #include "../src/ofxOscPlus/ParameterClient.h"
 #include "../src/ofxOscPlus/Layout.h"
 #include "../src/ofxOscPlus/Sender.h"
 #include "../src/ofxOscPlus/Receiver.h"
+
+// HEADER
+
+class ofTestApp : public ofxUnitTestsApp{
+public:
+
+    void run();
+
+private: // methods
+
+    void testLayout();
+    void testLayoutSerialize();
+    void testLayoutDeserialize();
+    void testDiscovery();
+    void testParameterServer();
+    void testParameterServerLayout();
+    void testClientLayout();
+    void testClientMultipleLayout();
+};
+
+// IMPLEMENTATION
 
 void ofTestApp::run(){
     ofLogToFile("log-test.txt");
@@ -102,7 +124,7 @@ void ofTestApp::testParameterServer(){
     ofParameter<ofColor> clrParam;
     ofParameter<bool> bParam;
     ofParameter<ofPoint> pointParam;
-    
+
     sourceParams.setName("testGroup");
     sourceParams.add(flParam.set("decimal", 1.0f));
     sourceParams.add(clrParam.set("color", ofColor::white));
@@ -128,7 +150,7 @@ void ofTestApp::testParameterServer(){
 
     // wait until server has received and processed signup message
     {
-        
+
         float timeout = ofGetElapsedTimef() + 2.0f;
         while(ofGetElapsedTimef() < timeout){
             // server processes signup request and add 127.0.0.1:8089 to list of connected clients
@@ -136,7 +158,7 @@ void ofTestApp::testParameterServer(){
             if(server.getClientCount() == 1)
                 break;
         }
-        
+
         test_eq(server.getClientCount(), 1, "client signup received");
     }
 
@@ -150,7 +172,7 @@ void ofTestApp::testParameterServer(){
             if(receiver.hasWaitingMessages())
                 break;
     }
-    
+
     // verify the notification
     test_eq(receiver.getNextMessage(msg), true, "receive param change message");
     test_eq(msg.getAddress(), "/testGroup/decimal", "updated param address");
@@ -165,7 +187,7 @@ void ofTestApp::testParameterServerLayout(){
     ofParameter<ofColor> clrParam;
     ofParameter<bool> bParam;
     ofParameter<ofPoint> pointParam;
-    
+
     sourceParams.setName("testGroup");
     sourceParams.add(flParam.set("decimal", 1.0f));
     sourceParams.add(clrParam.set("color", ofColor::white));
@@ -217,13 +239,13 @@ void ofTestApp::testClientLayout(){
     ofParameter<ofColor> clrParam;
     ofParameter<bool> bParam;
     ofParameter<ofPoint> pointParam;
-    
+
     sourceParams.setName("testGroup");
     sourceParams.add(flParam.set("decimal", 5.2f));
     sourceParams.add(clrParam.set("color", ofColor::blue));
     sourceParams.add(bParam.set("yezno", true));
     sourceParams.add(pointParam.set("punto", ofPoint(3.0f)));
-    
+
     // create param server
     ofxOscPlus::ParameterServer server;
     server.setup(sourceParams);
@@ -273,14 +295,14 @@ void ofTestApp::testClientMultipleLayout(){
     // create param server
     ofxOscPlus::ParameterServer server;
     server.setup(sourceParams);
-    
+
     // pre-connection status; params empty
     test_eq(destParams.size(), 0, "no client-side params yet");
-    
+
     // create client
     ofxOscPlus::ParameterClient client;
     client.setup(destParams);
-    
+
     // wait until initial sync completes
     {
         float timeout = ofGetElapsedTimef() + 3.0f;
@@ -295,7 +317,7 @@ void ofTestApp::testClientMultipleLayout(){
     // verify sync
     test_eq(server.getClientCount(), 1, "client conected to server");
     test_eq(destParams.size(), 3, "adopted all server-side params");
-    
+
     sourceParams.add(pointParam.set("punto", ofPoint(3.0f)));
     client.requestLayout();
 
@@ -316,4 +338,12 @@ void ofTestApp::testClientMultipleLayout(){
     }
 }
 
-#endif // DEBUG
+// main
+
+int main(){
+    ofInit();
+    auto window = make_shared<ofAppNoWindow>();
+    auto app = make_shared<ofTestApp>();
+    ofRunApp(window, app);
+    ofRunMainLoop();
+}

@@ -5,7 +5,7 @@
 using namespace ofxOscPlus;
 
 ParameterServer::ParameterServer() : updatingSender(nullptr){
-    
+
 }
 
 void ParameterServer::setup(ofParameterGroup &paramGroup, int port, int limit){
@@ -21,7 +21,7 @@ void ParameterServer::update(){
     ofxOscMessage msg;
 
     for(int i=0; i<nLimit; i++){
-        
+
         if(!receiver.hasWaitingMessages())
             break;
 
@@ -95,13 +95,13 @@ shared_ptr<Sender> ParameterServer::getSender(const string &host, int port){
         if(sender->getHost() == host && sender->getPort() == port)
             return sender;
     }
-    
+
     return nullptr;
 }
 
 void ParameterServer::signup(const string &host, int port){
     shared_ptr<Sender> sender = getSender(host, port);
-    
+
     if(sender != nullptr){
         ofLogWarning() << "Got signup with existing host/port, signing off existing client";
         signoff(host, port);
@@ -120,8 +120,7 @@ bool ParameterServer::signoff(const string &host, int port){
     shared_ptr<Sender> sender = getSender(host, port);
 
     if(sender != nullptr){
-        signoff(sender);
-        return;
+        return signoff(sender);
     }
 
     ofLogWarning() << "Could not find sender instance to signoff (host: " << host << ", port: " << port << ")";
@@ -171,4 +170,3 @@ void ParameterServer::onParameterChanged( ofAbstractParameter & parameter ){
             sender->sendParameter(parameter);
     }
 }
-

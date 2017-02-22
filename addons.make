@@ -1,4 +1,0 @@
-ofxUnitTests
-ofxOsc
-ofxGui
-ofxJSON

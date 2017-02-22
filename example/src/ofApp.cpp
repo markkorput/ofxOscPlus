@@ -1,10 +1,61 @@
-#include "ofApp.h"
+//--------------------------------------------------------------
+// ofApp.h
+//--------------------------------------------------------------
+
+#include "ofMain.h"
+#include "ofxGui.h"
+#include "ofxOscPlus.h"
+#include "client.h"
+
+class ofApp : public ofBaseApp{
+
+public: // common OF methods
+
+    void setup();
+    void update();
+    void draw();
+
+    void keyPressed(int key);
+
+private: // methods
+
+    void setupServerGui();
+
+private: // callbacks
+
+    void onLayoutUpdate(ofxOscPlus::ParameterClient & client);
+    void onAddParamBtn();
+    void onAddClientBtn();
+
+private: // attributes
+
+    // params
+    ofParameterGroup serverParams, subGroup, clientParams;
+    ofParameter<float> sizeParam;
+    ofParameter<bool> bParam;
+    ofParameter<ofPoint> pointParam;
+    ofParameter<ofColor> colorParam;
+    ofParameter<string> strParam;
+
+    vector<shared_ptr<ofAbstractParameter>> dynamicParams;
+
+    // gui
+    ofxPanel serverGui;
+
+    // ofxOscPlus demo; server/clients
+    ofxOscPlus::ParameterServer server;
+    vector<shared_ptr<Client>> clients;
+};
 
 //--------------------------------------------------------------
+// ofApp.cpp
+//--------------------------------------------------------------
+
 void ofApp::setup(){
     ofLogToFile("log.txt");
-    ofSetWindowShape(400,300);
-    ofSetWindowPosition(10,10);
+    ofSetWindowTitle("ofxOscPlus - example");
+    ofSetWindowShape(600,400);
+    ofSetWindowPosition(5,10);
 
     // setup server
     serverParams.setName("TestParams");
@@ -14,7 +65,7 @@ void ofApp::setup(){
     subGroup.add(bParam.set("yesno", false));
     subGroup.add(pointParam.set("pnt", ofPoint(0.0f)));
     subGroup.add(colorParam.set("clr", ofColor::green));
-    
+
     serverParams.add(subGroup);
 
     server.setup(serverParams);
@@ -71,51 +122,10 @@ void ofApp::keyPressed(int key){
 }
 
 //--------------------------------------------------------------
-void ofApp::keyReleased(int key){
-
-}
-
+// main.cpp
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
 
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
-
+int main( ){
+    ofSetupOpenGL(1024,768,OF_WINDOW);
+    ofRunApp(new ofApp());
 }
