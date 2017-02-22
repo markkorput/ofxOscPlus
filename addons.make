@@ -1,1 +1,4 @@
+ofxUnitTests
 ofxOsc
+ofxGui
+ofxJSON

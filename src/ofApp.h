@@ -34,8 +34,12 @@ class ofApp : public ofBaseApp{
 
     private: // attributes
     
-        ofParameterGroup serverParams, clientParams;
+        ofParameterGroup serverParams, subGroup, clientParams;
         ofParameter<float> sizeParam;
+        ofParameter<bool> bParam;
+        ofParameter<ofPoint> pointParam;
+        ofParameter<ofColor> colorParam;
+        ofParameter<string> strParam;
         ofxPanel serverGui;
         vector<shared_ptr<ofAbstractParameter>> dynamicParams;
         ofxOscPlus::ParameterServer server;

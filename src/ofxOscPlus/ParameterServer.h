@@ -27,6 +27,7 @@ namespace ofxOscPlus {
         shared_ptr<Sender> getSender(const string &host, int port);
         void signup(const string &host, int port);
         bool signoff(const string &host, int port);
+        bool signoff(shared_ptr<Sender> sender);
         void sendLayout(const string &host, int port);
 
     private: // callback methods
