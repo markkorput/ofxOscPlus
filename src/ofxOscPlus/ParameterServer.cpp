@@ -28,7 +28,10 @@ void ParameterServer::update(){
         if(!receiver.getNextMessage(msg))
             break;
 
-        // ofLog() << "server got message: " << msg.getAddress();
+//        ofLog() << "server got message: " << msg.getAddress();
+//        for(int i=0; i<msg.getNumArgs(); i++){
+//            ofLog() << "with: " << msg.getArgAsString(i);
+//        }
 
         if(msg.getAddress() == "/ofxOscPlus/signup"){
             if(msg.getNumArgs() == 2)
@@ -97,8 +100,15 @@ shared_ptr<Sender> ParameterServer::getSender(const string &host, int port){
 }
 
 void ParameterServer::signup(const string &host, int port){
+    shared_ptr<Sender> sender = getSender(host, port);
+    
+    if(sender != nullptr){
+        ofLogWarning() << "Got signup with existing host/port, signing off existing client";
+        signoff(host, port);
+    }
+
     // create sender instance
-    shared_ptr<Sender> sender = make_shared<Sender>();
+    sender = make_shared<Sender>();
     // configure sender instance to send to client who's host/port data we just received
     sender->setup(host, port);
     // stores in our senders vector
@@ -110,34 +120,48 @@ bool ParameterServer::signoff(const string &host, int port){
     shared_ptr<Sender> sender = getSender(host, port);
 
     if(sender != nullptr){
-        for(auto it=senders.begin(); it!=senders.end(); it++){
-            if(it->get() == sender.get()){
-                senders.erase(it);
-                ofLog() << "ofxOscPlus client signed off (host: " << sender->getHost() << ", port: " << sender->getPort() << ")";
-                return true;
-            }
-        }
+        signoff(sender);
+        return;
     }
 
     ofLogWarning() << "Could not find sender instance to signoff (host: " << host << ", port: " << port << ")";
     return false;
 }
 
+bool ParameterServer::signoff(shared_ptr<Sender> sender){
+    for(auto it=senders.begin(); it!=senders.end(); it++){
+        if(it->get() == sender.get()){
+            senders.erase(it);
+            ofLog() << "ofxOscPlus client signed off (host: " << sender->getHost() << ", port: " << sender->getPort() << ")";
+            return true;
+        }
+    }
+
+    ofLogWarning() << "Could not find sender instance to sign off (host: " << sender->getHost() << ", port: " << sender->getPort() << ")";
+    return false;
+}
+
 void ParameterServer::sendLayout(const string &host, int port){
+    auto sender = getSender(host, port);
+
+    if(sender == nullptr){
+        ofLogWarning() << "Couldn't find sender to send layout to";
+        return;
+    }
+
     // create layout payload in json-format
     Layout layout;
     layout.setup(*parameterGroup);
     string layoutJsonText = layout.toJsonText();
-    
-    // create osc response message
+
+    // create osc message
     ofxOscMessage responseMsg;
     responseMsg.setAddress("/ofxOscPlus/layout");
     responseMsg.addStringArg(layoutJsonText);
-    
+    // ofLog() << layoutJsonText;
+
     // send message
-    Sender sender;
-    sender.setup(host, port);
-    sender.sendMessage(responseMsg, false);
+    sender->sendMessage(responseMsg, false);
 }
 
 void ParameterServer::onParameterChanged( ofAbstractParameter & parameter ){
