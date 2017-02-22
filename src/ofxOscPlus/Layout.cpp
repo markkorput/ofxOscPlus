@@ -42,6 +42,10 @@ Json::Value& Layout::serialize(const ofParameterGroup &group, Json::Value &json)
             serialize(group.getGroup(i), subJson);
         }
 
+        if(type == typeid(ofParameter<string>).name()){
+            serialize(group.getString(i), subJson);
+        }
+
         if(type == typeid(ofParameter<int>).name()){
             serialize(group.getInt(i), subJson);
         }
@@ -63,6 +67,7 @@ Json::Value& Layout::serialize(const ofParameterGroup &group, Json::Value &json)
         }
 
         subJson["name"] = name;
+        
         childrenJson[i] = subJson;
     }
 
@@ -71,15 +76,25 @@ Json::Value& Layout::serialize(const ofParameterGroup &group, Json::Value &json)
     return json;
 }
 
+Json::Value& Layout::serialize(const ofParameter<string> param, Json::Value &json){
+    json["type"] = "string";
+    json["value"] = param.get();
+    return json;
+}
+
 Json::Value& Layout::serialize(const ofParameter<float> param, Json::Value &json){
     json["type"] = "float";
     json["value"] = param.get();
+    json["min"] = param.getMin();
+    json["max"] = param.getMax();
     return json;
 }
 
 Json::Value& Layout::serialize(const ofParameter<int> param, Json::Value &json){
     json["type"] = "int";
     json["value"] = param.get();
+    json["min"] = param.getMin();
+    json["max"] = param.getMax();
     return json;
 }
 
@@ -98,6 +113,8 @@ Json::Value& Layout::serialize(const ofParameter<ofColor> param, Json::Value &js
 Json::Value& Layout::serialize(const ofParameter<ofPoint> param, Json::Value &json){
     json["type"] = "point";
     json["value"] = ofToString(param.get());
+    json["min"] = ofToString(param.getMin());
+    json["max"] = ofToString(param.getMax());
     return json;
 }
 
@@ -143,6 +160,13 @@ bool Layout::deserialize(const Json::Value& json, ofParameterGroup &group){
             deserialize(child, *newGroup.get());
             group.add(*newGroup);
             allocatedParams.push_back(newGroup);
+            continue;
+        }
+
+        if(child["type"].asString() == "string"){
+            shared_ptr<ofParameter<string>> param = make_shared<ofParameter<string>>();
+            group.add(param->set(child["name"].asString(), child["value"].asString()));
+            allocatedParams.push_back(param);
             continue;
         }
 

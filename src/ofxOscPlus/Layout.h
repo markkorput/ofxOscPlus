@@ -20,6 +20,7 @@ namespace ofxOscPlus {
     private: // methods
 
         Json::Value& serialize(const ofParameterGroup &group, Json::Value &json);
+        Json::Value& serialize(const ofParameter<string> param, Json::Value &json);
         Json::Value& serialize(const ofParameter<float> param, Json::Value &json);
         Json::Value& serialize(const ofParameter<int> param, Json::Value &json);
         Json::Value& serialize(const ofParameter<bool> param, Json::Value &json);
